@@ -1,4 +1,5 @@
 # simpleYT2mov
+<<<<<<< HEAD
 Simple YouTube App that will download a YouTube Video for you locally as a mp4 file. The files will be saved in a dictory called videos in the root directory.
 
 Available switches for options:
@@ -12,3 +13,10 @@ python main.py --transcribe yes --url https://www.youtube.com/watch?v=zdQUdf23La
 ################################
 This script has practical usability in extracting Youtube video into text for RAG systems. The text can easily be loaded into a document loader, node parser, and index for RAG retrievals.
 With slight adjustments, this could be triggered as script or even executed via a streamlit application.
+=======
+Simple YouTube App that will download a YouTube Video for you locally as a mp4 file. 
+
+#update:
+The app now takes a list of YouTube Video and downloads each one with a 5 sec pause in between. The logic 
+has been implemented to ensure each video is only downloaded once if you have a large list with duplication.
+>>>>>>> f32797f (added list functionality and deduplication for the list)

@@ -3,9 +3,13 @@ import sys
 import argparse
 from yt_dlp import YoutubeDL
 import whisper   #uncomment to use transcription
+import time
 
 SAVE_DIR = "videos"
-DEFAULT_URL = 'https://www.youtube.com/watch?v=CKr0soIf4jA'
+DEFAULT_URLS = list(set([
+    'https://www.youtube.com/watch?v=qfaK5mYzc4E',
+    'https://www.youtube.com/watch?v=3PIqhdRzhxE'
+]))
 
 def get_youtube_dl_options(quality):
     if quality:
@@ -42,12 +46,12 @@ def clean_directory(directory):
                 os.remove(file_path)
 
 def download(urls, quality, transcribe):
-    youtube_dl_options = get_youtube_dl_options(quality)
-    with YoutubeDL(youtube_dl_options) as ydl:
-        ydl.download(urls)
+    for url in urls:
+        youtube_dl_options = get_youtube_dl_options(quality)
+        with YoutubeDL(youtube_dl_options) as ydl:
+            ydl.download([url])
 
-    if transcribe:
-        for url in urls:
+        if transcribe:
             video_id = url.split("v=")[-1]
             # Find the correct video file based on the download pattern
             for filename in os.listdir(SAVE_DIR):
@@ -56,7 +60,8 @@ def download(urls, quality, transcribe):
                     transcribe_video(video_path)
                     break
 
-    clean_directory(SAVE_DIR)
+        clean_directory(SAVE_DIR)
+        time.sleep(5)  # Add a 5-second delay between downloads
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download YouTube videos with specified quality and optional transcription.")
@@ -65,6 +70,6 @@ if __name__ == "__main__":
     parser.add_argument('--transcribe', type=str, choices=['yes', 'no'], default='no', help='Transcribe the video (yes or no).')
     args = parser.parse_args()
 
-    urls = [args.url] if args.url else [DEFAULT_URL]
+    urls = [args.url] if args.url else DEFAULT_URLS
     transcribe = args.transcribe.lower() == 'yes'
     download(urls, args.quality, transcribe)
