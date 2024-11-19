@@ -19,4 +19,6 @@ Simple YouTube App that will download a YouTube Video for you locally as a mp4 f
 #update:
 The app now takes a list of YouTube Video and downloads each one with a 5 sec pause in between. The logic 
 has been implemented to ensure each video is only downloaded once if you have a large list with duplication.
->>>>>>> f32797f (added list functionality and deduplication for the list)
+
+Added functionality to take an optional txt list file if you have a large of list of movies to download.
+Usage: python3 main.py --file <list.txt>
