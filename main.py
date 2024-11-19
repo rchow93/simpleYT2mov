@@ -63,13 +63,22 @@ def download(urls, quality, transcribe):
         clean_directory(SAVE_DIR)
         time.sleep(5)  # Add a 5-second delay between downloads
 
+def read_urls_from_file(file_path):
+    with open(file_path, "r") as file:
+        return [line.strip() for line in file if line.strip()]
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download YouTube videos with specified quality and optional transcription.")
     parser.add_argument('--quality', type=str, help='Resolution of the video (e.g., 1080, 720).')
     parser.add_argument('--url', type=str, help='YouTube URL to download.')
+    parser.add_argument('--file', type=str, help='Path to a text file containing YouTube URLs (one per line).')
     parser.add_argument('--transcribe', type=str, choices=['yes', 'no'], default='no', help='Transcribe the video (yes or no).')
     args = parser.parse_args()
 
-    urls = [args.url] if args.url else DEFAULT_URLS
+    if args.file:
+        urls = read_urls_from_file(args.file)
+    else:
+        urls = [args.url] if args.url else DEFAULT_URLS
+
     transcribe = args.transcribe.lower() == 'yes'
     download(urls, args.quality, transcribe)
